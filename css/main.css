@@ -1,0 +1,119 @@
+/* MAIN DESIGN SYSTEM & VARIABLES */
+:root {
+    --bg-dark: #080a0f;
+    --bg-surface: #121620;
+    --bg-card: #1a202c;
+    --bg-glass: rgba(18, 22, 32, 0.85);
+    
+    --primary: #00f0ff;
+    --primary-glow: rgba(0, 240, 255, 0.3);
+    --secondary: #9d4edd;
+    --accent-gold: #ffd166;
+    --danger: #ff2a6d;
+    --success: #05ffa1;
+
+    --text-primary: #f1f5f9;
+    --text-muted: #94a3b8;
+    
+    --font-heading: 'Cinzel', serif;
+    --font-body: 'Plus Jakarta Sans', -apple-system, sans-serif;
+    --font-code: 'Fira Code', monospace;
+
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+
+    --transition-fast: 0.2s ease;
+    --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+#app-container {
+    width: 100vw;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background: radial-gradient(circle at center, #141a29 0%, var(--bg-dark) 100%);
+}
+
+.btn {
+    padding: 12px 20px;
+    border-radius: var(--radius-sm);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--bg-card);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    transition: var(--transition-fast);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    touch-action: manipulation;
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #00c6ff, #0072ff);
+    color: #fff;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 198, 255, 0.3);
+}
+
+.btn-secondary {
+    background: var(--bg-surface);
+    border: 1px solid var(--primary);
+    color: var(--primary);
+}
+
+.btn-accent {
+    background: linear-gradient(135deg, var(--secondary), #5a189a);
+    color: #fff;
+    border: none;
+}
+
+.btn-danger {
+    background: rgba(255, 42, 109, 0.15);
+    border: 1px solid var(--danger);
+    color: var(--danger);
+}
+
+.backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    z-index: 100;
+    transition: opacity var(--transition-fast);
+}
+
+.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}

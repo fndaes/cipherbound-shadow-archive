@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#0a0c10">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Cipherbound: The Shadow Archive</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/game.css">
+    <link rel="stylesheet" href="css/mobile.css">
+</head>
+<body>
+    <div id="app-container">
+        <!-- HEADER HUD -->
+        <header class="hud-bar">
+            <div class="hud-left">
+                <button id="btn-char-modal" class="hud-btn" aria-label="Status Karakter">
+                    <span class="avatar-icon">👤</span>
+                    <span class="hud-hero-name">Cipher</span>
+                </button>
+            </div>
+
+            <div class="hud-center">
+                <div class="status-meter" id="meter-hp-container">
+                    <div class="meter-label"><span>HP</span><span id="txt-hp">100/100</span></div>
+                    <div class="meter-track"><div id="bar-hp" class="meter-fill hp-fill" style="width: 100%;"></div></div>
+                </div>
+                <div class="status-meter" id="meter-mp-container">
+                    <div class="meter-label"><span>MP</span><span id="txt-mp">50/50</span></div>
+                    <div class="meter-track"><div id="bar-mp" class="meter-fill mp-fill" style="width: 100%;"></div></div>
+                </div>
+            </div>
+
+            <div class="hud-right">
+                <button id="btn-inventory-drawer" class="hud-btn" aria-label="Tas Inventaris">
+                    <span class="hud-icon">🎒</span>
+                    <span id="badge-inv-count" class="hud-badge">0</span>
+                </button>
+                <button id="btn-menu-modal" class="hud-btn" aria-label="Menu Game">
+                    <span class="hud-icon">⚙️</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- MAIN GAME VIEWPORT -->
+        <main class="game-viewport">
+            <!-- CANVAS BACKGROUND & VISUAL STAGE -->
+            <section class="visual-stage">
+                <canvas id="bg-canvas"></canvas>
+                <div id="stage-location-tag" class="location-tag">
+                    <span class="loc-icon">📍</span> <span id="txt-location">Arsip Bayangan - Ruang Awal</span>
+                </div>
+
+                <!-- SPRITE ARENA -->
+                <div class="sprite-arena">
+                    <div id="hero-sprite-container" class="sprite-wrapper hero-wrapper">
+                        <!-- Hero SVG rendered via JS -->
+                    </div>
+                    <div id="enemy-sprite-container" class="sprite-wrapper enemy-wrapper hidden">
+                        <!-- Enemy SVG rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- FLOATING COMBAT NUMBERS OVERLAY -->
+                <div id="floating-text-container" class="floating-text-container"></div>
+            </section>
+
+            <!-- DIALOGUE & CHOICE PANEL -->
+            <section class="interaction-panel">
+                <div class="dialogue-card">
+                    <div class="dialogue-header">
+                        <span id="txt-speaker" class="speaker-name">Sistem Narasi</span>
+                        <div class="audio-toggle">
+                            <button id="btn-sound-toggle" class="icon-btn" title="Aktifkan/Matikan Suara">🔊</button>
+                        </div>
+                    </div>
+                    <div id="dialogue-body" class="dialogue-body">
+                        <p id="txt-dialogue" class="typewriter-text"></p>
+                    </div>
+                    <div id="tap-to-skip" class="tap-hint hidden">Sentuh untuk mempercepat ⏩</div>
+                </div>
+
+                <!-- CHOICES CONTAINER -->
+                <div id="choices-container" class="choices-container">
+                    <!-- Dynamic choice buttons inserted here -->
+                </div>
+            </section>
+        </main>
+
+        <!-- INVENTORY DRAWER -->
+        <aside id="drawer-inventory" class="drawer drawer-bottom-mobile">
+            <div class="drawer-header">
+                <h3>🎒 Tas & Perlengkapan</h3>
+                <button id="btn-close-inventory" class="close-btn">&times;</button>
+            </div>
+            <div class="drawer-content">
+                <div class="gold-counter">
+                    <span>🪙 Koin Gold:</span> <strong id="txt-gold">50</strong>
+                </div>
+                <div class="equipment-summary">
+                    <div class="equip-slot">
+                        <span class="slot-label">Senjata:</span>
+                        <span id="txt-weapon" class="slot-val">Pedang Latihan (+5 ATK)</span>
+                    </div>
+                    <div class="equip-slot">
+                        <span class="slot-label">Zirah:</span>
+                        <span id="txt-armor" class="slot-val">Jubah Kain (+2 DEF)</span>
+                    </div>
+                </div>
+                <div class="inventory-section">
+                    <h4>Barang Bawaan</h4>
+                    <div id="inventory-grid" class="inventory-grid">
+                        <!-- Items rendered via JS -->
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MODAL: KARAKTER STATS -->
+        <div id="modal-character" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>👤 Status Karakter</h3>
+                    <button id="btn-close-character" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="char-stat-list">
+                        <div class="stat-row"><span>Nama:</span> <strong>Cipher</strong></div>
+                        <div class="stat-row"><span>Kelas:</span> <strong>Arcane Seeker</strong></div>
+                        <div class="stat-row"><span>Kesehatan (HP):</span> <strong id="stat-hp">100 / 100</strong></div>
+                        <div class="stat-row"><span>Mana (MP):</span> <strong id="stat-mp">50 / 50</strong></div>
+                        <div class="stat-row"><span>Kewarasan (Sanity):</span> <strong id="stat-sanity">100%</strong></div>
+                        <div class="stat-row"><span>Daya Serang (ATK):</span> <strong id="stat-atk">15</strong></div>
+                        <div class="stat-row"><span>Pertahanan (DEF):</span> <strong id="stat-def">5</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: MENU & DEV SHOWCASE -->
+        <div id="modal-menu" class="modal-overlay hidden">
+            <div class="modal-card">
+                <div class="modal-header">
+                    <h3>⚙️ Menu & Dokumentasi</h3>
+                    <button id="btn-close-menu" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body menu-actions">
+                    <button id="btn-save-game" class="btn btn-primary">💾 Simpan Progres (Save)</button>
+                    <button id="btn-load-game" class="btn btn-secondary">📂 Muat Simpanan (Load)</button>
+                    <button id="btn-restart-game" class="btn btn-danger">🔄 Ulang Dari Awal</button>
+                    <hr class="divider">
+                    <button id="btn-open-tech" class="btn btn-accent">💻 Dokumentasi Portofolio / Dev Showcase</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL: TECH SHOWCASE (REKRUTER) -->
+        <div id="modal-tech" class="modal-overlay hidden">
+            <div class="modal-card modal-large">
+                <div class="modal-header">
+                    <h3>💻 Arsitektur & Perancangan Kode</h3>
+                    <button id="btn-close-tech" class="close-btn">&times;</button>
+                </div>
+                <div class="modal-body tech-doc">
+                    <h4>Project Architecture Overview</h4>
+                    <ul>
+                        <li><strong>Finite State Machine (FSM):</strong> Mengelola transisi narasi, percabangan cerita, dan fase pertempuran secara modular.</li>
+                        <li><strong>Web Audio API Procedural Sound:</strong> Menghasilkan SFX retro/sihir (tebasan, ketikan, sihir) langsung via kode JS tanpa berkas external.</li>
+                        <li><strong>HTML5 Canvas Particle System:</strong> Menghasilkan latar atmosferik dinamis dengan performa tinggi (60 FPS) di HP Android.</li>
+                        <li><strong>Mobile-First & Touch Optimization:</strong> Menghilangkan delay sentuhan, layout 100dvh responsif, serta safe-area inset untuk Android.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- OVERLAY BACKDROP -->
+        <div id="backdrop" class="backdrop hidden"></div>
+    </div>
+
+    <!-- Scripts -->
+    <script type="module" src="js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+/* MOBILE SPECIFIC OPTIMIZATIONS FOR ANDROID & SMARTPHONES */
+
+@media (max-width: 768px) {
+    .hud-bar {
+        padding-left: max(10px, env(safe-area-inset-left));
+        padding-right: max(10px, env(safe-area-inset-right));
+        height: 54px;
+    }
+
+    .hud-hero-name {
+        display: none;
+    }
+
+    .hud-center {
+        gap: 8px;
+        margin: 0 6px;
+    }
+
+    .meter-label {
+        font-size: 0.68rem;
+    }
+
+    .sprite-arena {
+        height: 180px;
+    }
+
+    .sprite-wrapper svg {
+        width: 110px;
+        height: 110px;
+    }
+
+    .dialogue-card {
+        min-height: 100px;
+        padding: 10px 12px;
+    }
+
+    .dialogue-body {
+        font-size: 0.9rem;
+    }
+
+    .choice-btn {
+        padding: 14px 14px;
+        font-size: 0.92rem;
+        min-height: 48px;
+    }
+
+    .modal-card {
+        max-width: 92vw;
+    }
+}
+
+@media (hover: none) {
+    .choice-btn:active {
+        background: var(--primary);
+        color: #000;
+        font-weight: bold;
+    }
+}
